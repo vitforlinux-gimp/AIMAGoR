@@ -15,6 +15,8 @@ Questo programma è stato scritto in Yad e Bash usa solo Wget per generare immag
 
 È possibile aprire con Gimp (se installato) le immagini, o salvarle in una cartella in formato .jpg
 
+L'installer oltre a scaricare il programma e installarlo in /usr/local/bin installa anche un file .desktop in /usr/share/applications così da avere un pulsante in Menu > Grafica
+
 La nuova funzione suggest prompt permette di avere suggerimenti direttamente dall'AI.
 
 La funzione Style permette di scegliere alcuni stili predefiniti.
@@ -34,6 +36,8 @@ Now the addition of new functions will be introduced in AIMAGoR
 This program was written in Yad, and Bash only uses Wget to generate images through [https://pollinations.ai](https://pollinations.ai/)
 
 You can open images with Gimp (if installed), or save them to a folder in .jpg format
+
+In addition to downloading the program and install it in/usr/local/bin, the Installer also install an .Desktop in/usr/share/applications file so as to have a button on the menu> graphics.
 
 The new suggest prompt function allows you to have suggestions directly from the AI.
 
