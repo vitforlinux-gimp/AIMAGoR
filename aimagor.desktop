@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=AIMAGoR
+Comment=AIMAGoR Artificial IMAge GeneratoR
+GenericName=Artificial Image GeneratoR
+Keywords=aigor;graphic;design;illustration;painting;
+Exec=AIMAGoR
+TryExec=AIMAGoR
+Icon=applications-graphics
+Terminal=false
+Categories=Graphics;2DGraphics;RasterGraphics;GTK;
+StartupNotify=true
+MimeType=image/jpeg;
