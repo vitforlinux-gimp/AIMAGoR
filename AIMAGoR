@@ -1,0 +1,227 @@
+#!/usr/bin/env bash
+
+
+config="/home/$USER/.config/AIMAGoR"
+asavedir="/home/$USER/AIMAGoR"
+mkdir -p "$config"
+mkdir -p "$asavedir"
+if [ ! -f "$config"/style ]; then
+    echo "None!photorealistic!photorealistic BW!comic!political satire cartoon!old pencil drawing!old drawing black paper and white pencil!Pablo Picasso!Maurice Utrillo!Leonardo da Vinci drawing!Leonardo da Vinci painting!Cute Creature!Pop Art poster!Norman Rockwell paintings!decoupage!tropical paradise!painting!post-impressionist painting!3d Objects!Action Figure!Caricatural Action Figure!clockwork toy!steampunk!cyberpunk!psychedelic poster!atlantis world!ice world!Origami Paper Art!Old Masters Art!Fairy Tale Art!Post-apocalyptic art!" > "$config"/style
+fi
+width=`cat "$config"/width`
+height=`cat "$config"/height`
+asave=`cat "$config"/asave`
+
+ICON="applications-graphics"
+
+ while :
+	do
+temp="`mktemp -d`"
+style=`cat "$config"/style`
+title=`cat "$config"/title`
+data=$(yad --width=600 --window-icon "$ICON" --image  "$ICON"  --image-on-top --button=Ok:0 --button=Exit:1 --center --form \
+            --title="AIMAGoR https://pollinations.ai/" \
+            --text="Enter the following information to generate an image" \
+            --center \
+            --field="Prompt":TXT \
+	     --field="Style":CB\
+	     --field="Suggest Prompt":CB\
+            --field="Width":NUM \
+            --field="Height":NUM\
+            --field="Seed (0 = Random)":NUM \
+            --field="Engine":CB\
+	    --field="Nologo":CHK \
+	    --field="Enhance":CHK \
+	    --field="Auto Save in ~/AIMAGoR":CHK \
+	    "$title" "$style" "None!Yes" "$width" "$height" "0" "flux!gptimage!turbo" "true" "false" "$asave") butt=$?
+	 
+echo $butt	 
+if [ "$butt" = 1 ]; then	
+	rm -rf "$temp" && exit 0
+fi
+	    
+ans=$?
+if [ $ans -eq 0 ]
+then
+    IFS="|" read -r -a array <<< "$data"
+    
+    if [ "${array[0]}" == "" ]
+    then
+    void=$(yad --window-icon "$ICON" --width=300 --center --text "Prompt is void Retry or Exit?" \
+--button=Retry:0 --button=Exit:1) ftest=$?
+if [ "$ftest" = 1 ]; then	
+	rm -rf "$temp" && exit 0
+fi
+if [ "$ftest" = 0 ]; then	
+	 continue
+fi
+    fi
+    echo "You have entered the following information:"
+    echo Prompt: "${array[0]}"
+    echo Style: "${array[1]}"
+    echo Suggest: "${array[2]}"
+    echo Width: "${array[3]}"
+    echo Height: "${array[4]}"
+    echo Seed: "${array[5]}"
+    echo Engine: "${array[6]}"
+    echo Nologo: "${array[7]}"
+    echo Enhance: "${array[8]}"
+    echo AutoSave: "${array[9]}"
+else
+    echo "You deleted"
+fi
+
+if [ "${array[1]}" = "None" ]; then
+style=""
+else
+style="style ""${array[1]}"
+fi
+
+title="${array[0]}"
+width="${array[3]}"
+height="${array[4]}"
+asave="${array[9]}"
+title="$title"" $style"
+title="${title//.}"
+#title="${title//:}"
+echo "$title"> $config/title
+echo "$width"> $config/width
+echo "$height"> $config/height
+echo "$asave"> $config/asave
+enhance="${array[2]}"
+seed="${array[5]}"
+short="${title:0:200}"
+short="${short//,}"
+short="${short//:}"
+#touch "$temp"/"$short"."$seed".jpg
+
+if [ "$seed" = 0 ]; then	
+	rseed=$RANDOM
+else
+	rseed=$seed
+fi
+echo Seed $rseed
+
+if [ "$enhance" = "Yes" ]; then	
+	#echo "$enhance"
+	wget --connect-timeout=20 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short".txt https://text.pollinations.ai/prompt/"ten examples of enhance prompt for image generation in English ""$title" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+#entext=$(yad  --title="Please remove the superfluous text." --center --width=800 --height=600 --editable --text-info --in-place --wrap --file-op < "$temp"/"$short".txt )
+
+sed -i -E 's/\*//g;s/\"//g' "$temp"/"$short".txt
+
+echo "false " >"$temp"/temp.txt 
+cat "$temp"/"$short".txt | grep '^1\.' | sed  's/1.//'>> "$temp"/temp.txt
+echo "false " >>  "$temp"/temp.txt 
+cat "$temp"/"$short".txt | grep '^2\.' | sed  's/2.//'>> "$temp"/temp.txt
+echo "false " >>  "$temp"/temp.txt 
+cat "$temp"/"$short".txt | grep '^3\.' | sed  's/3.//'>> "$temp"/temp.txt
+echo "false " >>  "$temp"/temp.txt 
+cat "$temp"/"$short".txt | grep '^4\.' | sed  's/4.//'>> "$temp"/temp.txt
+echo "false " >>  "$temp"/temp.txt 
+cat "$temp"/"$short".txt | grep '^5\.' | sed  's/5.//'>> "$temp"/temp.txt
+echo "false " >>  "$temp"/temp.txt 
+cat "$temp"/"$short".txt | grep '^6\.' | sed  's/6.//'>> "$temp"/temp.txt
+echo "false " >>  "$temp"/temp.txt 
+cat "$temp"/"$short".txt | grep '^7\.' | sed  's/7.//'>> "$temp"/temp.txt
+echo "false " >>  "$temp"/temp.txt 
+cat "$temp"/"$short".txt | grep '^8\.' | sed  's/8.//'>> "$temp"/temp.txt
+echo "false " >>  "$temp"/temp.txt 
+cat "$temp"/"$short".txt | grep '^9\.' | sed  's/9.//'>> "$temp"/temp.txt
+echo "false " >>  "$temp"/temp.txt 
+cat "$temp"/"$short".txt | grep '^10\.' | sed  's/10.//'>> "$temp"/temp.txt
+entext=$(yad --window-icon "$ICON" --center --list --editable --checklist \
+--title="Suggested prompt - the fields are editable" \
+  --width=1000 --height=400 \
+  --column=Tick \
+  --column=Suggest \
+  < "$temp"/temp.txt )
+echo "$entext" | sed -E 's/\*//g;s/TRUE\|//g;s/\|//g' > "$temp"/temp.txt
+
+#temptxt=`cat "$temp"/temp.txt`
+#sed -i -E 's/\*\*//g'"$temp"/temp.txt
+#cat vecchio\ scarpone.txt | grep '1\.' | sed  's/1.//'
+
+cat "$temp"/temp.txt | \
+while read arg; do
+  echo "Argument: $arg"
+arg="${arg//\\n}"
+sharg="${arg:0:200}"
+sharg="${sharg//,}"
+sharg="${sharg//:}"
+#sharg="${sharg//\\n}"
+
+wget --connect-timeout=20 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$sharg"."$rseed".jpg https://image.pollinations.ai/prompt/"$arg"?width="${array[3]}"\&height="${array[4]}"\&model="${array[6]}"\&nologo="${array[7]}"\&seed="$rseed"\&enhance="${array[8]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+done
+fi
+
+if [ "$enhance" = "None" ]; then
+title="${title//\\n}"
+short="${short//\\n}"
+wget --connect-timeout=20 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short"."$rseed".jpg https://image.pollinations.ai/prompt/"$title"?width="${array[3]}"\&height="${array[4]}"\&model="${array[6]}"\&nologo="${array[7]}"\&rseed="$seed"\&enhance="${array[8]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+fi
+#sleep 15
+if [[ $style != '' ]]; then
+sed -i "s/\ $style//" "$config"/title
+fi
+
+ls "$temp"/*.jpg > "$temp"/imglist
+
+if [ "$asave" = "TRUE" ]; then	
+	echo TRUE
+	cp "$temp"/*.jpg "$asavedir"
+	#cp "$temp"/*.txt "$asavedir"
+	# sed -i -e "s/$temp/$asavedir/g" "$temp"/imglist
+	#  "$temp"/imglist
+	sed -i -e "s!$temp!AIMAGoR!g" "$temp"/imglist
+	sed -i -e "s!AIMAGoR!$asavedir!g" "$temp"/imglist
+	#sed -i -e 's/\n//g' "$temp"/imglist
+	
+fi
+cat "$temp"/imglist | \
+while read arg; do
+  echo "Argument: $arg"
+viewpic=$(yad --window-icon "$ICON" --center --picture --file-op \
+  --title="Picture viewer" \
+  --width=800 --height=600 \
+ --button="Retry":4 --button="Open in Gimp":5  --button="Save and Retry":3 --button="Save and Exit":0 --button=Exit:1 \
+  --filename="$arg") options=$?
+
+echo $options
+
+if [ "$options" = 0 ]; then	
+	savepic=$(yad --window-icon "$ICON" --file --save --filename="$arg") save=$?
+	#echo  save "$save"
+	echo pic "$savepic"
+	mv "$arg" "$savepic" && exit 0
+fi
+
+if [ "$options" = 3 ]; then	
+	savepic=$(yad --window-icon "$ICON" --file --save --filename="$arg") save=$?
+	#echo  save "$save"
+	echo pic "$savepic"
+	mv "$arg" "$savepic"
+fi
+
+if [ "$options" = 1 ]; then	
+	rm -rf "$temp" && exit 0
+fi
+
+if [ "$options" = 5 ]; then
+sed -i 's/\/home/\"\/home/g' "$temp"/imglist
+sed -i -e "s!$temp!\"$temp!g" "$temp"/imglist
+sed -i 's/\.jpg/\.jpg\"/g' "$temp"/imglist
+sed -i 'N;s/\n/\ /g' "$temp"/imglist
+sed -i ':l; N; s/\n/\ /; tl'  "$temp"/imglist
+#sed -i 's/\"/gimp\ \"/' "$temp"/imglist
+
+	imgs=`cat "$temp"/imglist`
+	imgs="gimp ""$imgs"
+	bash -c "$imgs"
+fi
+if [ "$options" = 4 ]; then	
+	echo "retry"
+fi
+done
+done
+#rm -rf "$temp"
+exit 0
