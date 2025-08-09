@@ -15,7 +15,9 @@ Questo programma è stato scritto in Yad e Bash usa solo Wget per generare immag
 
 È possibile aprire con Gimp (se installato) le immagini, o salvarle in una cartella in formato .jpg
 
-La nuova funzione suggest prompt permette di avere suggerimenti direttamente dall'AI
+La nuova funzione suggest prompt permette di avere suggerimenti direttamente dall'AI.
+
+La funzione Style permette di scegliere alcuni stili predefiniti.
 
 La funzione autosave permette di avere i file direttamante salvati nella cartella /home/nome_utente/AIGMAGoR
 
@@ -33,7 +35,9 @@ This program was written in Yad, and Bash only uses Wget to generate images thro
 
 You can open images with Gimp (if installed), or save them to a folder in .jpg format
 
-The new suggest prompt function allows you to have suggestions directly from the AI
+The new suggest prompt function allows you to have suggestions directly from the AI.
+
+The Style function allows you to choose some predefined styles.
 
 The Autosave function allows you to have direct files saved in the/home/user_name/AIMAGoR folder
 
