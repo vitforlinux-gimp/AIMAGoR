@@ -5,7 +5,7 @@ AIMAGoR - Artificial IMAges GeneratoR - for Linux only - NEXT GEN
 
 Ho cominciato a sviluppare AIGoR per scherzo, per avere un giocattolo per creare immagini con Pollinations.Ai.
 
-Poi la cosa mi ha preso la mano, ho anche fatto un corso di AI tentuto da Giovanni Occhipinti di DigiFare, che mi ha dato alcune idee su come semplificare la creazione di immagini con AI.
+Poi la cosa mi ha preso la mano, ho anche fatto un corso di AI tentuto da [Giovanni Occhipinti di DigiFare](https://www.digifare.net/), che mi ha dato alcune idee su come semplificare la creazione di immagini con AI.
 
 Poi ho pensato che il nome AIGoR è spiritoso, ma poco originale, allora ho pensato che cambiarlo per la nuova generazione era una buona idea.
 
@@ -15,7 +15,7 @@ Ora l'aggiunta di nuove funzioni sarà introdotta in AIMAGoR
 
 I started developing Aigor as a joke, to have a toy to create images with Pollinations.ai.
 
-Then the thing took my hand, I also made a course of the Ai tempted by Giovanni Occhipinti to fast, which gave me some ideas on how to simplify the creation of images with AI.
+Then the thing took my hand, I also made a course of the Ai tempted by [Giovanni Occhipinti from DigiFare](https://www.digifare.net/), which gave me some ideas on how to simplify the creation of images with AI.
 
 Then I thought that the name Aigor is witty, but not very original, then I thought that changing it for the new generation was a good idea.
 
