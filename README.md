@@ -22,19 +22,18 @@ Then I thought that the name Aigor is witty, but not very original, then I thoug
 Now the addition of new functions will be introduced in AIMAGoR
 
 
-
-(INSTALL - INSTALLAZIONE)
-
-Copy the code below and first sending, the administration password will be requested.
-
-Copia il codice qui sotto e primi invio, sarà chiesta la password di amministazione.
-
 (DEPENDENCIES - DIPENDENZE)
 
 You need to install Yad and WGET
 
 È necessario installare Yad e WGET
 
+
+(INSTALL - INSTALLAZIONE)
+
+Copy the code below and first sending, the administration password will be requested.
+
+Copia il codice qui sotto e primi invio, sarà chiesta la password di amministazione.
 
 
 ```
