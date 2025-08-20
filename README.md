@@ -3,6 +3,8 @@ AIMAGoR - Artificial IMAges GeneratoR - for Linux only - NEXT GEN
 
 ![AIMAGoR-panel](https://raw.githubusercontent.com/vitforlinux-gimp/AIMAGoR/refs/heads/main/images/AIMAGoR-panel.jpg)
 
+![AIMAGoR-suggest](https://raw.githubusercontent.com/vitforlinux-gimp/AIMAGoR/refs/heads/main/images/AIMAGoR-suggest.jpg)
+
 (ITALIAN)
 
 Ho cominciato a sviluppare AIGoR per scherzo, per avere un giocattolo per creare immagini con Pollinations.Ai.
