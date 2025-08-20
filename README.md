@@ -1,7 +1,7 @@
 # AIMAGoR
 AIMAGoR - Artificial IMAges GeneratoR - for Linux only - NEXT GEN
 
-![https://raw.githubusercontent.com/vitforlinux-gimp/AIMAGoR/refs/heads/main/images/AIMAGoR-panel.jpg]
+![AIMAGoR-panel](https://raw.githubusercontent.com/vitforlinux-gimp/AIMAGoR/refs/heads/main/images/AIMAGoR-panel.jpg)
 
 (ITALIAN)
 
