@@ -19,6 +19,7 @@ ICON="applications-graphics"
 temp="`mktemp -d`"
 style=`cat "$config"/style`
 title=`cat "$config"/title`
+enhan=`cat "$config"/enhan`
 data=$(yad --width=600 --window-icon "$ICON" --image  "$ICON"  --image-on-top --button=Ok:0 --button=Exit:1 --center --form \
             --title="AIMAGoR https://pollinations.ai/" \
             --text="Enter the following information to generate an image" \
@@ -33,7 +34,7 @@ data=$(yad --width=600 --window-icon "$ICON" --image  "$ICON"  --image-on-top --
 	    --field="Nologo":CHK \
 	    --field="Enhance":CHK \
 	    --field="Auto Save in ~/AIMAGoR":CHK \
-	    "$title" "$style" "None!Yes" "$width" "$height" "0" "flux!gptimage!turbo" "true" "false" "$asave") butt=$?
+	    "$title" "$style" "None!Yes" "$width" "$height" "0" "flux!gptimage!turbo" "true" "$enhan" "$asave") butt=$?
 	 
 echo $butt	 
 if [ "$butt" = 1 ]; then	
@@ -80,14 +81,16 @@ fi
 title="${array[0]}"
 width="${array[3]}"
 height="${array[4]}"
+enhan="${array[8]}"
 asave="${array[9]}"
-title="$title"" $style"
 title="${title//.}"
 #title="${title//:}"
 echo "$title"> $config/title
 echo "$width"> $config/width
 echo "$height"> $config/height
+echo "$enhan"> $config/enhan
 echo "$asave"> $config/asave
+title="$title"" $style"
 enhance="${array[2]}"
 seed="${array[5]}"
 short="${title:0:200}"
@@ -157,7 +160,7 @@ fi
 if [ "$enhance" = "None" ]; then
 title="${title//\\n}"
 short="${short//\\n}"
-wget --connect-timeout=20 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short"."$rseed".jpg https://image.pollinations.ai/prompt/"$title"?width="${array[3]}"\&height="${array[4]}"\&model="${array[6]}"\&nologo="${array[7]}"\&rseed="$seed"\&enhance="${array[8]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+wget --connect-timeout=20 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short"."$rseed".jpg https://image.pollinations.ai/prompt/"$title"?width="${array[3]}"\&height="${array[4]}"\&model="${array[6]}"\&nologo="${array[7]}"\&seed="$rseed"\&enhance="${array[8]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
 fi
 #sleep 15
 if [[ $style != '' ]]; then
