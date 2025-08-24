@@ -5,8 +5,13 @@ config="/home/$USER/.config/AIMAGoR"
 asavedir="/home/$USER/AIMAGoR"
 mkdir -p "$config"
 mkdir -p "$asavedir"
+
+if [ ! -f "$config"/type ]; then
+    echo "None!photorealistic!photorealistic BW!comic!old pencil drawing!old drawing black paper and white pencil!Watercolor!Pop Art poster!decoupage!painting!tempera!oil paint!acrilyc paint!batik!3d Objects!steampunk!cyberpunk!Old Masters Art!Fairy Tale Art!" > "$config"/type
+fi
+
 if [ ! -f "$config"/style ]; then
-    echo "None!photorealistic!photorealistic BW!comic!political satire cartoon!old pencil drawing!old drawing black paper and white pencil!Pablo Picasso!Maurice Utrillo!Leonardo da Vinci drawing!Leonardo da Vinci painting!Cute Creature!Pop Art poster!Norman Rockwell paintings!decoupage!tropical paradise!painting!post-impressionist painting!3d Objects!Action Figure!Caricatural Action Figure!clockwork toy!steampunk!cyberpunk!psychedelic poster!atlantis world!ice world!Origami Paper Art!Old Masters Art!Fairy Tale Art!Post-apocalyptic art!" > "$config"/style
+    echo "None!comic!political satire cartoon!Pablo Picasso!Maurice Utrillo!Leonardo da Vinci drawing!Leonardo da Vinci painting!Walt Disney!Tamara De Lempicka Art!acrilyc paint!Cute Creature!Pop Art poster!Norman Rockwell paintings!decoupage!tropical paradise!post-impressionist painting!3d Objects!Action Figure!Caricatural Action Figure!clockwork toy!steampunk!cyberpunk!psychedelic poster!atlantis world!ice world!Origami Paper Art!Old Masters Art!Post-apocalyptic art!" > "$config"/style
 fi
 width=`cat "$config"/width`
 height=`cat "$config"/height`
@@ -18,6 +23,7 @@ ICON="applications-graphics"
 	do
 temp="`mktemp -d`"
 style=`cat "$config"/style`
+type=`cat "$config"/type`
 title=`cat "$config"/title`
 enhan=`cat "$config"/enhan`
 data=$(yad --width=600 --window-icon "$ICON" --image  "$ICON"  --image-on-top --button=Ok:0 --button=Exit:1 --center --form \
@@ -25,6 +31,7 @@ data=$(yad --width=600 --window-icon "$ICON" --image  "$ICON"  --image-on-top --
             --text="Enter the following information to generate an image" \
             --center \
             --field="Prompt":TXT \
+	     --field="Type":CB\
 	     --field="Style":CB\
 	     --field="Suggest Prompt":CB\
             --field="Width":NUM \
@@ -34,7 +41,7 @@ data=$(yad --width=600 --window-icon "$ICON" --image  "$ICON"  --image-on-top --
 	    --field="Nologo":CHK \
 	    --field="Enhance":CHK \
 	    --field="Auto Save in ~/AIMAGoR":CHK \
-	    "$title" "$style" "None!Yes" "$width" "$height" "0" "flux!gptimage!turbo" "true" "$enhan" "$asave") butt=$?
+	    "$title" "$type" "$style" "None!Yes" "$width" "$height" "0" "flux!gptimage!turbo" "true" "$enhan" "$asave") butt=$?
 	 
 echo $butt	 
 if [ "$butt" = 1 ]; then	
@@ -59,30 +66,37 @@ fi
     fi
     echo "You have entered the following information:"
     echo Prompt: "${array[0]}"
-    echo Style: "${array[1]}"
-    echo Suggest: "${array[2]}"
-    echo Width: "${array[3]}"
-    echo Height: "${array[4]}"
-    echo Seed: "${array[5]}"
-    echo Engine: "${array[6]}"
-    echo Nologo: "${array[7]}"
-    echo Enhance: "${array[8]}"
-    echo AutoSave: "${array[9]}"
+    echo Type: "${array[1]}"
+    echo Style: "${array[2]}"
+    echo Suggest: "${array[3]}"
+    echo Width: "${array[4]}"
+    echo Height: "${array[5]}"
+    echo Seed: "${array[6]}"
+    echo Engine: "${array[7]}"
+    echo Nologo: "${array[8]}"
+    echo Enhance: "${array[9]}"
+    echo AutoSave: "${array[10]}"
 else
     echo "You deleted"
 fi
 
 if [ "${array[1]}" = "None" ]; then
+type=""
+else
+type="type ""${array[1]}"
+fi
+
+if [ "${array[2]}" = "None" ]; then
 style=""
 else
-style="style ""${array[1]}"
+style="style ""${array[2]}"
 fi
 
 title="${array[0]}"
-width="${array[3]}"
-height="${array[4]}"
-enhan="${array[8]}"
-asave="${array[9]}"
+width="${array[4]}"
+height="${array[5]}"
+enhan="${array[9]}"
+asave="${array[10]}"
 title="${title//.}"
 #title="${title//:}"
 echo "$title"> $config/title
@@ -90,9 +104,9 @@ echo "$width"> $config/width
 echo "$height"> $config/height
 echo "$enhan"> $config/enhan
 echo "$asave"> $config/asave
-title="$title"" $style"
-enhance="${array[2]}"
-seed="${array[5]}"
+title="$title"" $type"" $style"
+enhance="${array[3]}"
+seed="${array[6]}"
 short="${title:0:200}"
 short="${short//,}"
 short="${short//:}"
@@ -153,16 +167,20 @@ sharg="${sharg//,}"
 sharg="${sharg//:}"
 #sharg="${sharg//\\n}"
 
-wget --connect-timeout=20 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$sharg"."$rseed".jpg https://image.pollinations.ai/prompt/"$arg"?width="${array[3]}"\&height="${array[4]}"\&model="${array[6]}"\&nologo="${array[7]}"\&seed="$rseed"\&enhance="${array[8]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+wget --connect-timeout=25 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$sharg"."$rseed".jpg https://image.pollinations.ai/prompt/"$arg"?width="${array[4]}"\&height="${array[5]}"\&model="${array[7]}"\&nologo="${array[8]}"\&seed="$rseed"\&enhance="${array[9]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
 done
 fi
 
 if [ "$enhance" = "None" ]; then
 title="${title//\\n}"
 short="${short//\\n}"
-wget --connect-timeout=20 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short"."$rseed".jpg https://image.pollinations.ai/prompt/"$title"?width="${array[3]}"\&height="${array[4]}"\&model="${array[6]}"\&nologo="${array[7]}"\&seed="$rseed"\&enhance="${array[8]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+wget --connect-timeout=25 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short"."$rseed".jpg https://image.pollinations.ai/prompt/"$title"?width="${array[4]}"\&height="${array[5]}"\&model="${array[7]}"\&nologo="${array[8]}"\&seed="$rseed"\&enhance="${array[9]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
 fi
 #sleep 15
+if [[ $type != '' ]]; then
+sed -i "s/\ $type//" "$config"/title
+fi
+
 if [[ $style != '' ]]; then
 sed -i "s/\ $style//" "$config"/title
 fi
