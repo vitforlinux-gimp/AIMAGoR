@@ -16,11 +16,11 @@ ICON="applications-graphics"
  while :
 	do
 if [ ! -f "$config"/type ]; then
-    echo "None!photorealistic!photorealistic BW!comic!old pencil drawing!old drawing black paper and white pencil!Watercolor!Pop Art poster!decoupage!painting!tempera!oil paint!acrilyc paint!batik!3d Objects!1960 sci-fi magazine comic!steampunk!cyberpunk!Old Masters Art!Fairy Tale Art!" > "$config"/type
+    echo "None!photorealistic!photorealistic BW!comic!old pencil drawing!old drawing black paper and white pencil!Watercolor!Pop Art poster!decoupage!painting!tempera!oil paint!acrilyc paint!batik!3d Objects!steampunk!cyberpunk!Old Masters Art!Fairy Tale Art!" > "$config"/type
 fi
 
 if [ ! -f "$config"/style ]; then
-    echo "None!comic!political satire cartoon!Pablo Picasso!Maurice Utrillo!Leonardo da Vinci drawing!Leonardo da Vinci painting!Walt Disney!Tamara De Lempicka Art!acrilyc paint!Cute Creature!Pop Art poster!Norman Rockwell paintings!decoupage!tropical paradise!post-impressionist painting!3d Objects!Action Figure!Caricatural Action Figure!clockwork toy!steampunk!cyberpunk!psychedelic poster!atlantis world!ice world!Origami Paper Art!Old Masters Art!Post-apocalyptic art!" > "$config"/style
+    echo "None!comic!political satire cartoon!Pablo Picasso!Maurice Utrillo!Leonardo da Vinci drawing!Leonardo da Vinci painting!Walt Disney!Tamara De Lempicka Art!acrilyc paint!Cute Creature!Pop Art poster!Norman Rockwell paintings!decoupage!tropical paradise!1960 sci-fi magazine!post-impressionist painting!3d Objects!Action Figure!Caricatural Action Figure!clockwork toy!steampunk!cyberpunk!psychedelic poster!atlantis world!ice world!Origami Paper Art!Old Masters Art!Post-apocalyptic art!" > "$config"/style
 fi
 temp="`mktemp -d`"
 style=`cat "$config"/style`
