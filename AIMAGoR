@@ -16,17 +16,18 @@ ICON="applications-graphics"
  while :
 	do
 if [ ! -f "$config"/type ]; then
-    echo "None!photorealistic!photorealistic BW!comic!old pencil drawing!old drawing black paper and white pencil!Watercolor!Pop Art poster!decoupage!painting!tempera!oil paint!acrilyc paint!batik!3d Objects!steampunk!cyberpunk!Old Masters Art!Fairy Tale Art!" > "$config"/type
+    echo "None!photorealistic!photorealistic BW!Aged Color photo!Old BW Photo!comic!old pencil drawing!old drawing black paper and white pencil!Watercolor!Psychedelic poster!Pop Art poster!decoupage!painting!tempera!oil paint!acrilyc paint!batik!3d Objects!steampunk!cyberpunk!Old Masters Art!Fairy Tale Art!" > "$config"/type
 fi
 
 if [ ! -f "$config"/style ]; then
-    echo "None!comic!political satire cartoon!Pablo Picasso!Maurice Utrillo!Leonardo da Vinci drawing!Leonardo da Vinci painting!Walt Disney!Tamara De Lempicka Art!acrilyc paint!Cute Creature!Pop Art poster!Norman Rockwell paintings!decoupage!tropical paradise!1960 sci-fi magazine!post-impressionist painting!3d Objects!Action Figure!Caricatural Action Figure!clockwork toy!steampunk!cyberpunk!psychedelic poster!atlantis world!ice world!Origami Paper Art!Old Masters Art!Post-apocalyptic art!" > "$config"/style
+    echo "None!comic!political satire cartoon!Pablo Picasso!Maurice Utrillo!Leonardo da Vinci drawing!Leonardo da Vinci painting!Walt Disney!Tamara De Lempicka Art!acrilyc paint!Cute Creature!Pop Art poster!Norman Rockwell paintings!decoupage!tropical paradise!1960 sci-fi magazine!post-impressionist painting!Colors like National Geographic!3d Objects!Action Figure!Caricatural Action Figure!clockwork toy!steampunk!cyberpunk!psychedelic poster!atlantis world!ice world!Origami Paper Art!Old Masters Art!Post-apocalyptic art!" > "$config"/style
 fi
 temp="`mktemp -d`"
 style=`cat "$config"/style`
 type=`cat "$config"/type`
 title=`cat "$config"/title`
 enhan=`cat "$config"/enhan`
+notext=`cat "$config"/notext`
 data=$(yad --width=600 --window-icon "$ICON" --image  "$ICON"  --image-on-top --buttons-layout=edge --button=Reset:2 --button=Ok:0 --button=Exit:1   --center --form \
             --title="AIMAGoR https://pollinations.ai/" \
             --text="Enter the following information to generate an image" \
@@ -40,9 +41,10 @@ data=$(yad --width=600 --window-icon "$ICON" --image  "$ICON"  --image-on-top --
             --field="Seed (0 = Random)":NUM \
             --field="Engine":CB\
 	    --field="Nologo":CHK \
+	    --field="No text":CHK \
 	    --field="Enhance":CHK \
 	    --field="Auto Save in ~/AIMAGoR":CHK \
-	    "$title" "$type" "$style" "None!Yes" "$width" "$height" "0" "flux!gptimage!turbo" "true" "$enhan" "$asave") butt=$?
+	    "$title" "$type" "$style" "None!Yes" "$width" "$height" "0" "flux!gptimage!turbo" "true" "$notext" "$enhan" "$asave") butt=$?
 	 
 echo $butt	 
 if [ "$butt" = 1 ]; then	
@@ -79,8 +81,9 @@ fi
     echo Seed: "${array[6]}"
     echo Engine: "${array[7]}"
     echo Nologo: "${array[8]}"
-    echo Enhance: "${array[9]}"
-    echo AutoSave: "${array[10]}"
+    echo No text: "${array[9]}"
+    echo Enhance: "${array[10]}"
+    echo AutoSave: "${array[11]}"
 else
     echo "You deleted"
 fi
@@ -97,11 +100,18 @@ else
 style="style ""${array[2]}"
 fi
 
+if [ "${array[9]}" = "FALSE" ]; then
+notextvar=""
+else
+notextvar=" no text in image"
+fi
+
 title="${array[0]}"
 width="${array[4]}"
 height="${array[5]}"
-enhan="${array[9]}"
-asave="${array[10]}"
+notext="${array[9]}"
+enhan="${array[10]}"
+asave="${array[11]}"
 title="${title//.}"
 #title="${title//:}"
 echo "$title"> $config/title
@@ -109,7 +119,8 @@ echo "$width"> $config/width
 echo "$height"> $config/height
 echo "$enhan"> $config/enhan
 echo "$asave"> $config/asave
-title="$title"" $type"" $style"
+echo "$notext"> $config/notext
+title="$title"" $type"" $style"" $notextvar"
 enhance="${array[3]}"
 seed="${array[6]}"
 short="${title:0:200}"
@@ -172,14 +183,14 @@ sharg="${sharg//,}"
 sharg="${sharg//:}"
 #sharg="${sharg//\\n}"
 
-wget --connect-timeout=25 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$sharg"."$rseed".jpg https://image.pollinations.ai/prompt/"$arg"?width="${array[4]}"\&height="${array[5]}"\&model="${array[7]}"\&nologo="${array[8]}"\&seed="$rseed"\&enhance="${array[9]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+wget --connect-timeout=25 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$sharg"."$rseed".jpg https://image.pollinations.ai/prompt/"$arg"?width="${array[4]}"\&height="${array[5]}"\&model="${array[7]}"\&nologo="${array[8]}"\&seed="$rseed"\&enhance="${array[10]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
 done
 fi
 
 if [ "$enhance" = "None" ]; then
 title="${title//\\n}"
 short="${short//\\n}"
-wget --connect-timeout=25 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short"."$rseed".jpg https://image.pollinations.ai/prompt/"$title"?width="${array[4]}"\&height="${array[5]}"\&model="${array[7]}"\&nologo="${array[8]}"\&seed="$rseed"\&enhance="${array[9]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+wget --connect-timeout=25 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short"."$rseed".jpg https://image.pollinations.ai/prompt/"$title"?width="${array[4]}"\&height="${array[5]}"\&model="${array[7]}"\&nologo="${array[8]}"\&seed="$rseed"\&enhance="${array[10]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
 fi
 #sleep 15
 if [[ $type != '' ]]; then
@@ -188,6 +199,10 @@ fi
 
 if [[ $style != '' ]]; then
 sed -i "s/\ $style//" "$config"/title
+fi
+
+if [[ $notext != '' ]]; then
+sed -i "s/$notextvar//" "$config"/title
 fi
 
 ls "$temp"/*.jpg > "$temp"/imglist
@@ -206,9 +221,9 @@ fi
 cat "$temp"/imglist | \
 while read arg; do
   echo "Argument: $arg"
-viewpic=$(yad --window-icon "$ICON" --center --picture --file-op \
-  --title="Picture viewer" \
-  --width=800 --height=600 \
+viewpic=$(yad --window-icon "$ICON"  --buttons-layout=edge --center --picture --file-op \
+  --title="Picture viewer $arg " \
+  --width=1000 --height=600 \
  --button="Retry":4 --button="Open in Gimp":5  --button="Save and Retry":3 --button="Save and Exit":0 --button=Exit:1 \
   --filename="$arg") options=$?
 
