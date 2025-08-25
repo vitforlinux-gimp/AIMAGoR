@@ -6,13 +6,7 @@ asavedir="/home/$USER/AIMAGoR"
 mkdir -p "$config"
 mkdir -p "$asavedir"
 
-if [ ! -f "$config"/type ]; then
-    echo "None!photorealistic!photorealistic BW!comic!old pencil drawing!old drawing black paper and white pencil!Watercolor!Pop Art poster!decoupage!painting!tempera!oil paint!acrilyc paint!batik!3d Objects!steampunk!cyberpunk!Old Masters Art!Fairy Tale Art!" > "$config"/type
-fi
 
-if [ ! -f "$config"/style ]; then
-    echo "None!comic!political satire cartoon!Pablo Picasso!Maurice Utrillo!Leonardo da Vinci drawing!Leonardo da Vinci painting!Walt Disney!Tamara De Lempicka Art!acrilyc paint!Cute Creature!Pop Art poster!Norman Rockwell paintings!decoupage!tropical paradise!post-impressionist painting!3d Objects!Action Figure!Caricatural Action Figure!clockwork toy!steampunk!cyberpunk!psychedelic poster!atlantis world!ice world!Origami Paper Art!Old Masters Art!Post-apocalyptic art!" > "$config"/style
-fi
 width=`cat "$config"/width`
 height=`cat "$config"/height`
 asave=`cat "$config"/asave`
@@ -21,12 +15,19 @@ ICON="applications-graphics"
 
  while :
 	do
+if [ ! -f "$config"/type ]; then
+    echo "None!photorealistic!photorealistic BW!comic!old pencil drawing!old drawing black paper and white pencil!Watercolor!Pop Art poster!decoupage!painting!tempera!oil paint!acrilyc paint!batik!3d Objects!1960 sci-fi magazine comic!steampunk!cyberpunk!Old Masters Art!Fairy Tale Art!" > "$config"/type
+fi
+
+if [ ! -f "$config"/style ]; then
+    echo "None!comic!political satire cartoon!Pablo Picasso!Maurice Utrillo!Leonardo da Vinci drawing!Leonardo da Vinci painting!Walt Disney!Tamara De Lempicka Art!acrilyc paint!Cute Creature!Pop Art poster!Norman Rockwell paintings!decoupage!tropical paradise!post-impressionist painting!3d Objects!Action Figure!Caricatural Action Figure!clockwork toy!steampunk!cyberpunk!psychedelic poster!atlantis world!ice world!Origami Paper Art!Old Masters Art!Post-apocalyptic art!" > "$config"/style
+fi
 temp="`mktemp -d`"
 style=`cat "$config"/style`
 type=`cat "$config"/type`
 title=`cat "$config"/title`
 enhan=`cat "$config"/enhan`
-data=$(yad --width=600 --window-icon "$ICON" --image  "$ICON"  --image-on-top --button=Ok:0 --button=Exit:1 --center --form \
+data=$(yad --width=600 --window-icon "$ICON" --image  "$ICON"  --image-on-top --buttons-layout=edge --button=Reset:2 --button=Ok:0 --button=Exit:1   --center --form \
             --title="AIMAGoR https://pollinations.ai/" \
             --text="Enter the following information to generate an image" \
             --center \
@@ -46,6 +47,10 @@ data=$(yad --width=600 --window-icon "$ICON" --image  "$ICON"  --image-on-top --
 echo $butt	 
 if [ "$butt" = 1 ]; then	
 	rm -rf "$temp" && exit 0
+fi
+
+if [ "$butt" = 2 ]; then	
+	rm "$config"/type && rm "$config"/style && continue
 fi
 	    
 ans=$?
