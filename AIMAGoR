@@ -16,11 +16,11 @@ ICON="applications-graphics"
  while :
 	do
 if [ ! -f "$config"/type ]; then
-    echo "None!photorealistic!photorealistic BW!Aged Color photo!Old BW Photo!comic!old pencil drawing!old drawing black paper and white pencil!Watercolor!Psychedelic poster!Pop Art poster!decoupage!painting!tempera!oil paint!acrilyc paint!batik!3d Objects!steampunk!cyberpunk!Old Masters Art!Fairy Tale Art!" > "$config"/type
+    echo "None!photorealistic!photorealistic BW!Aged Color photo!Old BW Photo!comic!old pencil drawing!old drawing black paper and white pencil!Watercolor!Psychedelic poster!Seamless pattern!Pop Art poster!decoupage!painting!tempera!oil on canvas paint!acrilyc paint!batik!3d Objects!steampunk!cyberpunk!Old Masters Art!Fairy Tale Art!" > "$config"/type
 fi
 
 if [ ! -f "$config"/style ]; then
-    echo "None!comic!political satire cartoon!Pablo Picasso!Maurice Utrillo!Leonardo da Vinci drawing!Leonardo da Vinci painting!Walt Disney!Tamara De Lempicka Art!acrilyc paint!Cute Creature!Pop Art poster!Norman Rockwell paintings!decoupage!tropical paradise!1960 sci-fi magazine!post-impressionist painting!Colors like National Geographic!3d Objects!Action Figure!Caricatural Action Figure!clockwork toy!steampunk!cyberpunk!psychedelic poster!atlantis world!ice world!Origami Paper Art!Old Masters Art!Post-apocalyptic art!" > "$config"/style
+    echo "None!comic!political satire cartoon!Pablo Picasso!Maurice Utrillo!Leonardo da Vinci drawing!Leonardo da Vinci painting!Walt Disney!Tamara De Lempicka Art!Ai Weiwei!Antonio Ligabue!Edgar Degas!Edvard Munch!Frida Kahlo!Gustav Klimt!Hueronymus Bosch!Joan Mirò!Michelangelo Merisi Caravaggio!Vincent van Gogh!William Turner!acrilyc paint!Papier Machè!Cute Creature!Pop Art poster!Norman Rockwell paintings!decoupage!tropical paradise!1960 sci-fi magazine!post-impressionist painting!Colors like National Geographic!3d Objects!Action Figure!Caricatural Action Figure!clockwork toy!steampunk!cyberpunk!psychedelic poster!atlantis world!ice world!Origami Paper Art!Old Masters Art!Post-apocalyptic art!" > "$config"/style
 fi
 temp="`mktemp -d`"
 style=`cat "$config"/style`
@@ -137,7 +137,7 @@ echo Seed $rseed
 
 if [ "$enhance" = "Yes" ]; then	
 	#echo "$enhance"
-	wget --connect-timeout=20 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short".txt https://text.pollinations.ai/prompt/"ten examples of enhance prompt for image generation in English ""$title" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+	wget --connect-timeout=30 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short".txt https://text.pollinations.ai/prompt/"ten examples of enhance prompt for image generation in English ""$title" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
 #entext=$(yad  --title="Please remove the superfluous text." --center --width=800 --height=600 --editable --text-info --in-place --wrap --file-op < "$temp"/"$short".txt )
 
 sed -i -E 's/\*//g;s/\"//g' "$temp"/"$short".txt
@@ -183,7 +183,7 @@ sharg="${sharg//,}"
 sharg="${sharg//:}"
 #sharg="${sharg//\\n}"
 
-wget --connect-timeout=25 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$sharg"."$rseed".jpg https://image.pollinations.ai/prompt/"$arg"?width="${array[4]}"\&height="${array[5]}"\&model="${array[7]}"\&nologo="${array[8]}"\&seed="$rseed"\&enhance="${array[10]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+wget --connect-timeout=30 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$sharg"."$rseed".jpg https://image.pollinations.ai/prompt/"$arg"?width="${array[4]}"\&height="${array[5]}"\&model="${array[7]}"\&nologo="${array[8]}"\&seed="$rseed"\&enhance="${array[10]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
 done
 fi
 
