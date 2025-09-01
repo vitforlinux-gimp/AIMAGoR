@@ -5,7 +5,24 @@ config="/home/$USER/.config/AIMAGoR"
 asavedir="/home/$USER/AIMAGoR"
 mkdir -p "$config"
 mkdir -p "$asavedir"
-
+if [ ! -f "$config"/width ]; then
+    echo 1024 > "$config"/width
+fi
+if [ ! -f "$config"/height ]; then
+    echo 768 > "$config"/height
+fi
+if [ ! -f "$config"/asave ]; then
+    echo FALSE > "$config"/asave 
+fi
+if [ ! -f "$config"/title ]; then
+    echo "" > "$config"/title 
+fi
+if [ ! -f "$config"/enhan ]; then
+    echo FALSE > "$config"/enhan
+fi
+if [ ! -f "$config"/notext ]; then
+    echo FALSE > "$config"/notext
+fi
 
 width=`cat "$config"/width`
 height=`cat "$config"/height`
@@ -16,7 +33,7 @@ ICON="applications-graphics"
  while :
 	do
 if [ ! -f "$config"/type ]; then
-    echo "None!photorealistic!photorealistic BW!Aged Color photo!Old BW Photo!comic!old pencil drawing!old drawing black paper and white pencil!Watercolor!Psychedelic poster!Seamless pattern!Pop Art poster!decoupage!painting!tempera!oil on canvas paint!acrilyc paint!batik!3d Objects!steampunk!cyberpunk!Old Masters Art!Fairy Tale Art!" > "$config"/type
+    echo "None!photorealistic!photorealistic BW!Aged Color photo!Old BW Photo!comic!old pencil drawing!old drawing black paper and white pencil!Watercolor!Psychedelic poster!Seamless pattern!Pop Art poster!Vintage travel poster!decoupage!painting!tempera!oil on canvas paint!acrilyc paint!batik!3d Objects!steampunk!cyberpunk!Old Masters Art!Fairy Tale Art!" > "$config"/type
 fi
 
 if [ ! -f "$config"/style ]; then
@@ -44,7 +61,7 @@ data=$(yad --width=600 --window-icon "$ICON" --image  "$ICON"  --image-on-top --
 	    --field="No text":CHK \
 	    --field="Enhance":CHK \
 	    --field="Auto Save in ~/AIMAGoR":CHK \
-	    "$title" "$type" "$style" "None!Yes" "$width" "$height" "0" "flux!gptimage!turbo" "true" "$notext" "$enhan" "$asave") butt=$?
+	    "$title" "$type" "$style" "None!Yes" "$width" "$height" "0" "flux!turbo" "true" "$notext" "$enhan" "$asave") butt=$?
 	 
 echo $butt	 
 if [ "$butt" = 1 ]; then	
@@ -120,7 +137,7 @@ echo "$height"> $config/height
 echo "$enhan"> $config/enhan
 echo "$asave"> $config/asave
 echo "$notext"> $config/notext
-title="$title"" $type"" $style"" $notextvar"
+title="$title"" $type"" $style""$notextvar"
 enhance="${array[3]}"
 seed="${array[6]}"
 short="${title:0:200}"
@@ -137,30 +154,30 @@ echo Seed $rseed
 
 if [ "$enhance" = "Yes" ]; then	
 	#echo "$enhance"
-	wget --connect-timeout=30 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short".txt https://text.pollinations.ai/prompt/"ten examples of enhance prompt for image generation in English ""$title" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+	wget --connect-timeout=50 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short".txt https://text.pollinations.ai/prompt/"ten examples of enhance prompt for image generation in English ""$title" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
 #entext=$(yad  --title="Please remove the superfluous text." --center --width=800 --height=600 --editable --text-info --in-place --wrap --file-op < "$temp"/"$short".txt )
 
-sed -i -E 's/\*//g;s/\"//g' "$temp"/"$short".txt
+sed -i 's/\*//g;s/\"//g' "$temp"/"$short".txt
 
-echo "false " >"$temp"/temp.txt 
+echo "FALSE" >"$temp"/temp.txt 
 cat "$temp"/"$short".txt | grep '^1\.' | sed  's/1.//'>> "$temp"/temp.txt
-echo "false " >>  "$temp"/temp.txt 
+echo "FALSE" >>  "$temp"/temp.txt 
 cat "$temp"/"$short".txt | grep '^2\.' | sed  's/2.//'>> "$temp"/temp.txt
-echo "false " >>  "$temp"/temp.txt 
+echo "FALSE" >>  "$temp"/temp.txt 
 cat "$temp"/"$short".txt | grep '^3\.' | sed  's/3.//'>> "$temp"/temp.txt
-echo "false " >>  "$temp"/temp.txt 
+echo "FALSE" >>  "$temp"/temp.txt 
 cat "$temp"/"$short".txt | grep '^4\.' | sed  's/4.//'>> "$temp"/temp.txt
-echo "false " >>  "$temp"/temp.txt 
+echo "FALSE" >>  "$temp"/temp.txt 
 cat "$temp"/"$short".txt | grep '^5\.' | sed  's/5.//'>> "$temp"/temp.txt
-echo "false " >>  "$temp"/temp.txt 
+echo "FALSE" >>  "$temp"/temp.txt 
 cat "$temp"/"$short".txt | grep '^6\.' | sed  's/6.//'>> "$temp"/temp.txt
-echo "false " >>  "$temp"/temp.txt 
+echo "FALSE" >>  "$temp"/temp.txt 
 cat "$temp"/"$short".txt | grep '^7\.' | sed  's/7.//'>> "$temp"/temp.txt
-echo "false " >>  "$temp"/temp.txt 
+echo "FALSE" >>  "$temp"/temp.txt 
 cat "$temp"/"$short".txt | grep '^8\.' | sed  's/8.//'>> "$temp"/temp.txt
-echo "false " >>  "$temp"/temp.txt 
+echo "FALSE" >>  "$temp"/temp.txt 
 cat "$temp"/"$short".txt | grep '^9\.' | sed  's/9.//'>> "$temp"/temp.txt
-echo "false " >>  "$temp"/temp.txt 
+echo "FALSE" >>  "$temp"/temp.txt 
 cat "$temp"/"$short".txt | grep '^10\.' | sed  's/10.//'>> "$temp"/temp.txt
 entext=$(yad --window-icon "$ICON" --center --list --editable --checklist \
 --title="Suggested prompt - the fields are editable" \
@@ -168,7 +185,7 @@ entext=$(yad --window-icon "$ICON" --center --list --editable --checklist \
   --column=Tick \
   --column=Suggest \
   < "$temp"/temp.txt )
-echo "$entext" | sed -E 's/\*//g;s/TRUE\|//g;s/\|//g' > "$temp"/temp.txt
+echo "$entext" | sed 's/\*//g;s/TRUE\|//g;s/\|//g' > "$temp"/temp.txt
 
 #temptxt=`cat "$temp"/temp.txt`
 #sed -i -E 's/\*\*//g'"$temp"/temp.txt
@@ -183,7 +200,7 @@ sharg="${sharg//,}"
 sharg="${sharg//:}"
 #sharg="${sharg//\\n}"
 
-wget --connect-timeout=30 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$sharg"."$rseed".jpg https://image.pollinations.ai/prompt/"$arg"?width="${array[4]}"\&height="${array[5]}"\&model="${array[7]}"\&nologo="${array[8]}"\&seed="$rseed"\&enhance="${array[10]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+wget --connect-timeout=50 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$sharg"."$rseed".jpg https://image.pollinations.ai/prompt/"$arg"?width="${array[4]}"\&height="${array[5]}"\&model="${array[7]}"\&nologo="${array[8]}"\&seed="$rseed"\&enhance="${array[10]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
 done
 fi
 
@@ -194,14 +211,14 @@ wget --connect-timeout=25 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel
 fi
 #sleep 15
 if [[ $type != '' ]]; then
-sed -i "s/\ $type//" "$config"/title
+sed -i "s/$type//" "$config"/title
 fi
 
 if [[ $style != '' ]]; then
-sed -i "s/\ $style//" "$config"/title
+sed -i "s/$style//" "$config"/title
 fi
 
-if [[ $notext != '' ]]; then
+if [[ $notext = 'TRUE' ]]; then
 sed -i "s/$notextvar//" "$config"/title
 fi
 
@@ -213,8 +230,8 @@ if [ "$asave" = "TRUE" ]; then
 	#cp "$temp"/*.txt "$asavedir"
 	# sed -i -e "s/$temp/$asavedir/g" "$temp"/imglist
 	#  "$temp"/imglist
-	sed -i -e "s!$temp!AIMAGoR!g" "$temp"/imglist
-	sed -i -e "s!AIMAGoR!$asavedir!g" "$temp"/imglist
+	sed -i "s!$temp!AIMAGoR!g" "$temp"/imglist
+	sed -i "s!AIMAGoR!$asavedir!g" "$temp"/imglist
 	#sed -i -e 's/\n//g' "$temp"/imglist
 	
 fi
@@ -249,7 +266,7 @@ fi
 
 if [ "$options" = 5 ]; then
 sed -i 's/\/home/\"\/home/g' "$temp"/imglist
-sed -i -e "s!$temp!\"$temp!g" "$temp"/imglist
+sed -i "s!$temp!\"$temp!g" "$temp"/imglist
 sed -i 's/\.jpg/\.jpg\"/g' "$temp"/imglist
 sed -i 'N;s/\n/\ /g' "$temp"/imglist
 sed -i ':l; N; s/\n/\ /; tl'  "$temp"/imglist
