@@ -33,11 +33,11 @@ ICON="applications-graphics"
  while :
 	do
 if [ ! -f "$config"/type ]; then
-    echo "None!photorealistic!photorealistic BW!Aged Color photo!Old BW Photo!comic!old pencil drawing!old drawing black paper and white pencil!Watercolor!Psychedelic poster!Seamless pattern!Pop Art poster!Vintage travel poster!decoupage!painting!tempera!oil on canvas paint!acrilyc paint!batik!3d Objects!steampunk!cyberpunk!Old Masters Art!Fairy Tale Art!" > "$config"/type
+    echo "None!photorealistic!photorealistic BW!Aged Color photo!Old BW Photo!comic!old pencil drawing!old drawing black paper and white pencil!Watercolor!Psychedelic poster!Seamless pattern!Pop Art poster!Vintage travel poster!decoupage!painting!tempera!oil on canvas paint!acrilyc paint!batik!3d Objects!steampunk!cyberpunk!Old Masters Art!Fairy Tale Art!Tattoo!preparatory drawing for tattoo!" > "$config"/type
 fi
 
 if [ ! -f "$config"/style ]; then
-    echo "None!comic!political satire cartoon!Pablo Picasso!Maurice Utrillo!Leonardo da Vinci drawing!Leonardo da Vinci painting!Walt Disney!Tamara De Lempicka Art!Ai Weiwei!Antonio Ligabue!Edgar Degas!Edvard Munch!Frida Kahlo!Gustav Klimt!Hueronymus Bosch!Joan Mirò!Michelangelo Merisi Caravaggio!Vincent van Gogh!William Turner!acrilyc paint!Papier Machè!Cute Creature!Pop Art poster!Norman Rockwell paintings!decoupage!tropical paradise!1960 sci-fi magazine!post-impressionist painting!Colors like National Geographic!3d Objects!Action Figure!Caricatural Action Figure!clockwork toy!steampunk!cyberpunk!psychedelic poster!atlantis world!ice world!Origami Paper Art!Old Masters Art!Post-apocalyptic art!" > "$config"/style
+    echo "None!comic!political satire cartoon!Pablo Picasso!Maurice Utrillo!Leonardo da Vinci drawing!Leonardo da Vinci painting!Walt Disney!Tamara De Lempicka Art!Ai Weiwei!Antonio Ligabue!Edgar Degas!Edvard Munch!Frida Kahlo!Gustav Klimt!Hueronymus Bosch!Joan Mirò!Michelangelo Merisi Caravaggio!Vincent van Gogh!William Turner!acrilyc paint!Papier Machè!Cute Creature!Pop Art poster!Norman Rockwell paintings!decoupage!tropical paradise!1960 sci-fi magazine!post-impressionist painting!Colors like National Geographic!Color Splash!3d Objects!Action Figure!Caricatural Action Figure!clockwork toy!steampunk!cyberpunk!solarpunk!psychedelic poster!Psychedelic Crazy Trippy painting!atlantis world!ice world!Origami Paper Art!Old Masters Art!Post-apocalyptic art!Ukiyo-e!Surrealism!Renaissance!Impressionism!Bauhaus!Baroque!Art Nouveau!Art Deco!Abstract Expressionism!Vector art!" > "$config"/style
 fi
 temp="`mktemp -d`"
 style=`cat "$config"/style`
@@ -61,7 +61,7 @@ data=$(yad --width=600 --window-icon "$ICON" --image  "$ICON"  --image-on-top --
 	    --field="No text":CHK \
 	    --field="Enhance":CHK \
 	    --field="Auto Save in ~/AIMAGoR":CHK \
-	    "$title" "$type" "$style" "None!Yes" "$width" "$height" "0" "flux!turbo" "true" "$notext" "$enhan" "$asave") butt=$?
+	    "$title" "$type" "$style" "None!Yes!" "$width" "$height" "0" "flux!turbo!stable-diffusion!dreamlike!openjourney" "true" "$notext" "$enhan" "$asave") butt=$?
 	 
 echo $butt	 
 if [ "$butt" = 1 ]; then	
@@ -79,12 +79,17 @@ then
     
     if [ "${array[0]}" == "" ]
     then
-    void=$(yad --window-icon "$ICON" --width=300 --center --text "Prompt is void Retry or Exit?" \
---button=Retry:0 --button=Exit:1) ftest=$?
+    void=$(yad --window-icon "$ICON" --width=500  --window-icon "$ICON" --image  "$ICON"  --image-on-top --buttons-layout=edge --center --title "Prompt is void" --text "Prompt is void\nFill with random words Retry or Exit?" \
+--button=Random:2 --button=Retry:0 --button=Exit:1) ftest=$?
 if [ "$ftest" = 1 ]; then	
 	rm -rf "$temp" && exit 0
 fi
 if [ "$ftest" = 0 ]; then	
+	 continue
+fi
+if [ "$ftest" = 2 ]; then
+	wget --connect-timeout=50 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$config"/title https://text.pollinations.ai/prompt/"ten random words separated by commas"?seed=$RANDOM |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+sed -i 's/,/ /g' "$config"/title
 	 continue
 fi
     fi
@@ -207,7 +212,22 @@ fi
 if [ "$enhance" = "None" ]; then
 title="${title//\\n}"
 short="${short//\\n}"
-wget --connect-timeout=25 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short"."$rseed".jpg https://image.pollinations.ai/prompt/"$title"?width="${array[4]}"\&height="${array[5]}"\&model="${array[7]}"\&nologo="${array[8]}"\&seed="$rseed"\&enhance="${array[10]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+
+wget --connect-timeout=50 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short"."$rseed".jpg https://image.pollinations.ai/prompt/"$title"?width="${array[4]}"\&height="${array[5]}"\&model="${array[7]}"\&nologo="${array[8]}"\&seed="$rseed"\&enhance="${array[10]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+
+weight=`ls -l "$temp"/"$short"."$rseed".jpg | cut -d " " -f5`
+if [[ $weight = 0 ]]; then
+weightpan=$(yad --window-icon "$ICON" --button=Retry:0 --button=Exit:1  --center  --width=300 --title="ERROR..." --text="ERROR Image not created...") weighttest=$?
+rm -f "$temp"/"$short"."$rseed".jpg
+
+if [ "$weighttest" = 1 ]; then	
+	rm -rf "$temp" && exit 0
+fi
+if [ "$weighttest" = 0 ]; then	
+	 continue
+fi
+
+fi
 fi
 #sleep 15
 if [[ $type != '' ]]; then
