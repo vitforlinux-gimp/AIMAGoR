@@ -37,7 +37,7 @@ if [ ! -f "$config"/type ]; then
 fi
 
 if [ ! -f "$config"/style ]; then
-    echo "None!comic!political satire cartoon!Pablo Picasso!Maurice Utrillo!Leonardo da Vinci drawing!Leonardo da Vinci painting!Walt Disney!Tamara De Lempicka Art!Ai Weiwei!Antonio Ligabue!Edgar Degas!Edvard Munch!Frida Kahlo!Gustav Klimt!Hueronymus Bosch!Joan Mirò!Michelangelo Merisi Caravaggio!Vincent van Gogh!William Turner!acrilyc paint!Papier Machè!Cute Creature!Pop Art poster!Norman Rockwell paintings!decoupage!tropical paradise!1960 sci-fi magazine!post-impressionist painting!Colors like National Geographic!Color Splash!3d Objects!Action Figure!Caricatural Action Figure!clockwork toy!steampunk!cyberpunk!solarpunk!psychedelic poster!Psychedelic Crazy Trippy painting!atlantis world!ice world!Origami Paper Art!Old Masters Art!Post-apocalyptic art!Ukiyo-e!Surrealism!Renaissance!Impressionism!Bauhaus!Baroque!Art Nouveau!Art Deco!Abstract Expressionism!Vector art!" > "$config"/style
+    echo "None!comic!political satire cartoon!Pablo Picasso!Maurice Utrillo!Leonardo da Vinci drawing!Leonardo da Vinci painting!Walt Disney!Tamara De Lempicka Art!Ai Weiwei!Antonio Ligabue!Edgar Degas!Edvard Munch!Frida Kahlo!Gustav Klimt!Hueronymus Bosch!Joan Mirò!Michelangelo Merisi Caravaggio!Vincent van Gogh!William Turner!acrilyc paint!Papier Machè!Cute Creature!Pop Art poster!Norman Rockwell paintings!decoupage!tropical paradise!1960 sci-fi magazine!post-impressionist painting!Colors like National Geographic!Colors like HDR!Color Splash!3d Objects!Action Figure!Caricatural Action Figure!clockwork toy!steampunk!cyberpunk!solarpunk!psychedelic poster!Psychedelic Crazy Trippy painting!atlantis world!ice world!Origami Paper Art!Old Masters Art!Post-apocalyptic art!Ukiyo-e!Surrealism!Renaissance!Impressionism!Bauhaus!Baroque!Art Nouveau!Art Deco!Abstract Expressionism!Vector art!Street art!" > "$config"/style
 fi
 temp="`mktemp -d`"
 style=`cat "$config"/style`
@@ -49,7 +49,7 @@ data=$(yad --width=600 --window-icon "$ICON" --image  "$ICON"  --image-on-top --
             --title="AIMAGoR https://pollinations.ai/" \
             --text="Enter the following information to generate an image" \
             --center \
-            --field="Prompt":TXT \
+            --field="Prompt":TXT\
 	     --field="Type":CB\
 	     --field="Style":CB\
 	     --field="Suggest Prompt":CB\
@@ -159,7 +159,7 @@ echo Seed $rseed
 
 if [ "$enhance" = "Yes" ]; then	
 	#echo "$enhance"
-	wget --connect-timeout=50 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short".txt https://text.pollinations.ai/prompt/"ten examples of enhance prompt for image generation in English ""$title" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+	wget --tries=10 --connect-timeout=10 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short".txt https://text.pollinations.ai/prompt/"ten examples of enhance prompt for image generation in English ""$title" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
 #entext=$(yad  --title="Please remove the superfluous text." --center --width=800 --height=600 --editable --text-info --in-place --wrap --file-op < "$temp"/"$short".txt )
 
 sed -i 's/\*//g;s/\"//g' "$temp"/"$short".txt
@@ -205,7 +205,7 @@ sharg="${sharg//,}"
 sharg="${sharg//:}"
 #sharg="${sharg//\\n}"
 
-wget --connect-timeout=50 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$sharg"."$rseed".jpg https://image.pollinations.ai/prompt/"$arg"?width="${array[4]}"\&height="${array[5]}"\&model="${array[7]}"\&nologo="${array[8]}"\&seed="$rseed"\&enhance="${array[10]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+wget --tries=10 --connect-timeout=10 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$sharg"."$rseed".jpg https://image.pollinations.ai/prompt/"$arg"?width="${array[4]}"\&height="${array[5]}"\&model="${array[7]}"\&nologo="${array[8]}"\&seed="$rseed"\&enhance="${array[10]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
 done
 fi
 
@@ -213,7 +213,7 @@ if [ "$enhance" = "None" ]; then
 title="${title//\\n}"
 short="${short//\\n}"
 
-wget --connect-timeout=50 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short"."$rseed".jpg https://image.pollinations.ai/prompt/"$title"?width="${array[4]}"\&height="${array[5]}"\&model="${array[7]}"\&nologo="${array[8]}"\&seed="$rseed"\&enhance="${array[10]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
+wget --tries=10 --connect-timeout=10 --no-http-keep-alive -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" --output-document="$temp"/"$short"."$rseed".jpg https://image.pollinations.ai/prompt/"$title"?width="${array[4]}"\&height="${array[5]}"\&model="${array[7]}"\&nologo="${array[8]}"\&seed="$rseed"\&enhance="${array[10]}" |  yad --window-icon "$ICON" --progress --auto-close --center  --width=300 --title="Wait please..."
 
 weight=`ls -l "$temp"/"$short"."$rseed".jpg | cut -d " " -f5`
 if [[ $weight = 0 ]]; then
