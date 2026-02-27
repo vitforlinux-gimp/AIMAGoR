@@ -1,4 +1,8 @@
 # AIMAGoR
+ATTENZIONE: Questo programma non funzionerà MAI più. Pollinations.ai ha cambiato politiche.
+
+WARNING: This program will NEVER work again. Pollinations.ai has changed policies.
+
 AIMAGoR - Artificial IMAges GeneratoR - for Linux only - NEXT GEN
 
 ![AIMAGoR-panel](https://raw.githubusercontent.com/vitforlinux-gimp/AIMAGoR/refs/heads/main/images/AIMAGoR-panel.jpg)
